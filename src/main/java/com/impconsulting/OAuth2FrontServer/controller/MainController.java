@@ -20,6 +20,6 @@ public class MainController {
     public String main(Model model) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
 
-        return "main";
+        return "main"; //
     }
 }

@@ -90,7 +90,7 @@
                             success: function (data) {
                                 if (data != null) {
                                     console.log(data);
-                                    alert(data);
+                                    window.location = "/main";
                                     return;
                                 } else {
                                     alert("로그인 오류입니다.");

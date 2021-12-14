@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,13 +30,18 @@ public class LoginController {
 	
 	@ResponseBody
 	@RequestMapping(value="/login", method=RequestMethod.POST)
-    public ResponseEntity<String> loginPost(Model model, HttpServletRequest request) throws Exception {
+    public ResponseEntity<String> loginPost(Model model, HttpServletRequest request, HttpSession session) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
     	
     	String auth = request.getHeader("Authorization");
     	String scope = request.getHeader("scope");
     	
     	LOG.info("POST");
-        return ResponseEntity.ok("loginForm");
+    	LOG.info("auth = " + auth);
+    	LOG.info("scope = " + scope);
+    	session.setAttribute("auth", auth);
+    	session.setAttribute("scope", scope);
+    	
+        return ResponseEntity.ok("login success");
     }   
 }
