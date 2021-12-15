@@ -15,7 +15,49 @@
             rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
         <script>
+            function parseHttpHeaders(httpHeaders) {
+                return httpHeaders
+                    .split("\n")
+                    .map(x => x.split(/: */, 2))
+                    .filter(x => x[0])
+                    .reduce((ac, x) => {
+                        ac[x[0]] = x[1];
+                        return ac;
+                    }, {});
+            }
+
             document.addEventListener("DOMContentLoaded", function () {
+                var req = new XMLHttpRequest();
+                req.open("GET", '/main', false);
+                req.send(null);
+                var headers = parseHttpHeaders(req.getAllResponseHeaders());
+                //console.log(headers);
+                $.ajax({
+                    url: 'http://localhost:8088/user/data',
+                    type: 'GET',
+                    contentType: false,
+                    processData: false,
+                    async: false,
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader("Authorization", headers.auth);
+                        xhr.setRequestHeader("scope", headers.scope);
+                    },
+                    success: function (data) {
+                        if (data != null) {
+                            console.log(data);
+                            $('#content1').append(data['name'] + "님 반갑습니다! (자바스크립트 - ApiServer 서버 연결)");
+                            //alert(data);
+                            return;
+                        } else {
+                            alert("로그인 오류입니다.");
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("잘못된 토큰입니다.");
+                    }
+                });
+
+
                 $.ajax({
                     type: 'POST',
                     url: '/main',
@@ -23,7 +65,7 @@
                         if (data != null) {
                             console.log(data);
                             // alert("로그 아웃 처리 되었습니다.");
-                            $('#content').append(data['result']['name'] + "님 반갑습니다!");
+                            $('#content2').append(data['result']['name'] + "님 반갑습니다! (FrontServer - ApiServer 서버 연결)");
                         } else {
                             alert("에러발생 관리자에게 문의 하세요");
                             return;
@@ -61,7 +103,9 @@
     </head>
 
     <body>
-        <p id="content"></p>
+        <p id="content1"></p>
+
+        <p id="content2"></p>
         <br><br><br>
 
         <a onclick="javascript:swLogOut();" style="cursor: pointer;">

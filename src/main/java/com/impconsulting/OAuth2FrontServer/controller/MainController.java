@@ -30,9 +30,9 @@ public class MainController {
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String mainGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
 		//Map<String, Object> params = new HashMap<String, Object>();
-//    	response.addHeader("auth", (String) session.getAttribute("auth"));
-//    	response.addHeader("refreshToken", (String) session.getAttribute("refreshToken"));
-//    	response.addHeader("scope", (String) session.getAttribute("scope"));
+    	response.addHeader("auth", (String) session.getAttribute("auth"));
+    	response.addHeader("refreshToken", (String) session.getAttribute("refreshToken"));
+    	response.addHeader("scope", (String) session.getAttribute("scope"));
 		return "main";
 	}
 	
