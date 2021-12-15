@@ -52,6 +52,7 @@
                     },
                     success: function (data) {
                         //console.log(data);
+                        // 바로 밑 ajax는 테스트용으로 꼭 필요한 것은 아님
                         $.ajax({
                             url: 'http://localhost:8088/user/profile',
                             type: 'GET',
@@ -75,6 +76,7 @@
                                 alert("잘못된 토큰입니다.");
                             }
                         });
+                        //
 
                         $.ajax({
                             type: 'POST',

@@ -40,10 +40,10 @@ public class MainController {
 	public ResponseEntity<Map<String, Object>> mainPost(Model model, HttpServletResponse response, HttpSession session) throws Exception {
 		Map<String, Object> data = new HashMap<String, Object>();
 	
-		String result = webClient.get().uri("/user/profile").headers(headers -> {
+		Map<String, Object> result = webClient.get().uri("/user/data").headers(headers -> {
 			headers.add("Authorization", (String) session.getAttribute("auth"));
 			headers.add("scope", (String) session.getAttribute("scope"));
-		}).retrieve().bodyToMono(String.class).block();
+		}).retrieve().bodyToMono(HashMap.class).block();
 		
 		data.put("result", result);
 		

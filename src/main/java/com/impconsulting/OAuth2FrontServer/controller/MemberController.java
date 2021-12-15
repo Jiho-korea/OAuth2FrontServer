@@ -24,7 +24,7 @@ public class MemberController {
 	@RequestMapping(value="/login", method=RequestMethod.GET)
     public String loginGet(Model model) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
-    	LOG.info("GET");
+//    	LOG.info("GET");
         return "loginForm";
     }   
 	
@@ -37,10 +37,10 @@ public class MemberController {
     	String refreshToken = request.getHeader("refreshToken");
     	String scope = request.getHeader("scope");
     	
-    	LOG.info("POST");
-    	LOG.info("auth = " + auth);
-    	LOG.info("refreshToken = " + refreshToken);
-    	LOG.info("scope = " + scope);
+//    	LOG.info("POST");
+//    	LOG.info("auth = " + auth);
+//    	LOG.info("refreshToken = " + refreshToken);
+//    	LOG.info("scope = " + scope);
     	session.setAttribute("auth", auth);
     	session.setAttribute("refreshToken", refreshToken);
     	session.setAttribute("scope", scope);

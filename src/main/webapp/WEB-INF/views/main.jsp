@@ -23,7 +23,7 @@
                         if (data != null) {
                             console.log(data);
                             // alert("로그 아웃 처리 되었습니다.");
-                            $('#content').append(data['result']);
+                            $('#content').append(data['result']['name'] + "님 반갑습니다!");
                         } else {
                             alert("에러발생 관리자에게 문의 하세요");
                             return;
@@ -62,7 +62,7 @@
 
     <body>
         <p id="content"></p>
-        <br><br><br><br><br>
+        <br><br><br>
 
         <a onclick="javascript:swLogOut();" style="cursor: pointer;">
             로그아웃
