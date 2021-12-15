@@ -31,4 +31,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
                 .addPathPatterns("/*")
         		.excludePathPatterns("/login");
     }
+    
+    @Bean
+    public WebClient webClient() {
+		return WebClient.builder().baseUrl("http://localhost:8088").build();
+    }
 }

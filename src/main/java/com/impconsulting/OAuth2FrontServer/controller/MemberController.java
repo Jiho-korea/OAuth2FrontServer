@@ -34,12 +34,15 @@ public class MemberController {
     	Map<String, Object> params = new HashMap<String, Object>();
     	
     	String auth = request.getHeader("Authorization");
+    	String refreshToken = request.getHeader("refreshToken");
     	String scope = request.getHeader("scope");
     	
     	LOG.info("POST");
     	LOG.info("auth = " + auth);
+    	LOG.info("refreshToken = " + refreshToken);
     	LOG.info("scope = " + scope);
     	session.setAttribute("auth", auth);
+    	session.setAttribute("refreshToken", refreshToken);
     	session.setAttribute("scope", scope);
     	
         return ResponseEntity.ok("login success");

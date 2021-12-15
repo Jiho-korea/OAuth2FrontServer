@@ -9,7 +9,6 @@
         <meta name="description" content="">
         <meta name="author" content="">
         <title>OAuth2</title>
-        <link rel="stylesheet" type="text/css" href="/css/basic.css" />
         <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
         <link
             href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -85,11 +84,19 @@
                             async: false,
                             beforeSend: function (xhr) {
                                 xhr.setRequestHeader("Authorization", data.token_type + "" + data.access_token);
+                                xhr.setRequestHeader("refreshToken", data.refresh_token);
                                 xhr.setRequestHeader("scope", data.scope);
                             },
                             success: function (data) {
                                 if (data != null) {
                                     window.location = "/main";
+                                    /*
+                                    var req = new XMLHttpRequest();
+                                    req.open('GET', "/main", false);
+                                    req.send(null);
+                                    var headers = req.getAllResponseHeaders().toLowerCase();
+                                    alert(headers);
+                                    */
                                     return;
                                 } else {
                                     alert("로그인 오류입니다.");

@@ -15,11 +15,32 @@
             rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                $.ajax({
+                    type: 'POST',
+                    url: '/main',
+                    success: function (data) {
+                        if (data != null) {
+                            console.log(data);
+                            // alert("로그 아웃 처리 되었습니다.");
+                            $('#content').append(data['result']);
+                        } else {
+                            alert("에러발생 관리자에게 문의 하세요");
+                            return;
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('로그 아웃 ajax 실패');
+                        console.log(jqXHR, textStatus, errorThrown);
+                    }
+                });
+            });
             function swLogOut() {
                 if (confirm("로그 아웃 하시겠습니까?")) {
                     $.ajax({
                         type: 'POST',
                         url: '/logout',
+                        data: "json",
                         success: function (data) {
                             if (data != null) {
                                 // alert("로그 아웃 처리 되었습니다.");
@@ -40,8 +61,9 @@
     </head>
 
     <body>
-        메인페이지
+        <p id="content"></p>
         <br><br><br><br><br>
+
         <a onclick="javascript:swLogOut();" style="cursor: pointer;">
             로그아웃
         </a>
