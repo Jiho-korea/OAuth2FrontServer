@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class LoginController {
+public class MemberController {
 	
-	private static final Log LOG = LogFactory.getLog(LoginController.class);
+	private static final Log LOG = LogFactory.getLog(MemberController.class);
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
     public String loginGet(Model model) throws Exception {
@@ -43,5 +43,19 @@ public class LoginController {
     	session.setAttribute("scope", scope);
     	
         return ResponseEntity.ok("login success");
+    }  
+	
+	@RequestMapping(value="/logout", method=RequestMethod.POST)
+    public ResponseEntity<String> logoutGet(Model model, HttpServletRequest request, HttpSession session) throws Exception {
+    	Map<String, Object> params = new HashMap<String, Object>();
+    	
+    	Object obj = session.getAttribute("auth");
+		// 세션 제거
+		if (obj != null) {
+			session.removeAttribute("auth");
+			session.invalidate();
+		}
+		
+        return ResponseEntity.ok("logout success");
     }   
 }

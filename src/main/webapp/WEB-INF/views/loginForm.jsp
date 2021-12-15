@@ -65,7 +65,7 @@
                             },
                             success: function (data) {
                                 if (data != null) {
-                                    console.log(data);
+                                    //console.log(data);
                                     alert(data);
                                     return;
                                 } else {
@@ -89,7 +89,6 @@
                             },
                             success: function (data) {
                                 if (data != null) {
-                                    console.log(data);
                                     window.location = "/main";
                                     return;
                                 } else {
