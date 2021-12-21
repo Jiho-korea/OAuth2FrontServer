@@ -31,8 +31,11 @@ public class MainController {
 	public String mainGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
 		//Map<String, Object> params = new HashMap<String, Object>();
 		response.addHeader("Authorization", (String) session.getAttribute("tokenType") + (String) session.getAttribute("accessToken"));
-    	response.addHeader("refreshToken", (String) session.getAttribute("refreshToken"));
+		response.addHeader("accesstoken", (String) session.getAttribute("accessToken"));
+    	response.addHeader("refreshtoken", (String) session.getAttribute("refreshToken"));
     	response.addHeader("scope", (String) session.getAttribute("scope"));
+//    	LOG.info("front accesstoken" + (String) session.getAttribute("accessToken"));
+//    	LOG.info("front refreshtoken" + (String) session.getAttribute("refreshToken"));
 		return "main";
 	}
 	
@@ -40,15 +43,17 @@ public class MainController {
 	public ResponseEntity<Map<String, Object>> mainPost(Model model, HttpServletResponse response, HttpSession session) throws Exception {
 		Map<String, Object> data = new HashMap<String, Object>();
 	
+		//LOG.info("front accesstoken = "+ (String) session.getAttribute("accessToken"));
 		Map<String, Object> result = webClient.get().uri("/user/data").headers(headers -> {
 			headers.add("authorization", (String) session.getAttribute("tokenType") + (String) session.getAttribute("accessToken"));
-			headers.add("accesstoken", (String) session.getAttribute("accesstoken"));
+			headers.add("accesstoken", (String) session.getAttribute("accessToken"));
+			headers.add("refreshtoken", (String) session.getAttribute("refreshToken"));
 			headers.add("scope", (String) session.getAttribute("scope"));
 		}).retrieve().bodyToMono(HashMap.class).block();
 		
 		data.put("result", result);
 		
-		LOG.info(data);
+//		LOG.info(data);
 		return new ResponseEntity<Map<String, Object>>(data, HttpStatus.OK);   
 	}
 }

@@ -38,21 +38,28 @@
                     processData: false,
                     async: false,
                     beforeSend: function (xhr) {
+                        //console.log(headers.accesstoken);
+                        //console.log(headers.refreshtoken);
+                        //console.log(headers.authorization);
+                        //console.log(headers.scope);
                         xhr.setRequestHeader("Authorization", headers.authorization);
+                        xhr.setRequestHeader("accesstoken", headers.accesstoken);
+                        xhr.setRequestHeader("refreshtoken", headers.refreshtoken);
                         xhr.setRequestHeader("scope", headers.scope);
                     },
                     success: function (data) {
-                        if (data != null) {
+                        if (data != null && data != "") {
                             console.log(data);
                             $('#content1').append(data['name'] + "님 반갑습니다! (자바스크립트 - ApiServer 서버 연결)");
                             //alert(data);
                             return;
                         } else {
-                            alert("로그인 오류입니다.");
+                            alert("인증이 유효하지 않습니다.");
+                            swLogOut();
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert("잘못된 토큰입니다.");
+                        alert("인증이 유효하지 않습니다.");
                     }
                 });
 
@@ -60,17 +67,17 @@
                     type: 'POST',
                     url: '/main',
                     success: function (data) {
-                        if (data != null) {
+                        if (data.result != null) {
                             console.log(data);
-                            // alert("로그 아웃 처리 되었습니다.");
                             $('#content2').append(data['result']['name'] + "님 반갑습니다! (FrontServer - ApiServer 서버 연결)");
                         } else {
-                            alert("에러발생 관리자에게 문의 하세요");
+                            alert("인증이 유효하지 않습니다.");
+                            swLogOut();
                             return;
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert("로그인 오류입니다.");
+                        alert("인증이 유효하지 않습니다.");
                         console.log(jqXHR, textStatus, errorThrown);
                     }
                 });
