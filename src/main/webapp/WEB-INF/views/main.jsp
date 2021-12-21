@@ -27,7 +27,6 @@
             }
 
             document.addEventListener("DOMContentLoaded", function () {
-                /*
                 var req = new XMLHttpRequest();
                 req.open("GET", '/main', false);
                 req.send(null);
@@ -37,7 +36,7 @@
                     type: 'GET',
                     contentType: false,
                     processData: false,
-                    async: false,
+                    async: true,
                     beforeSend: function (xhr) {
                         //console.log(headers.accesstoken);
                         //console.log(headers.refreshtoken);
@@ -62,7 +61,7 @@
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert("인증이 유효하지 않습니다.");
                     }
-                });*/
+                });
 
                 $.ajax({
                     type: 'POST',
