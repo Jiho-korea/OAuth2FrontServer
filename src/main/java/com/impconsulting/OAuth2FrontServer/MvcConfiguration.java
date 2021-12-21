@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunctions;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -33,7 +35,15 @@ public class MvcConfiguration implements WebMvcConfigurer {
     }
     
     @Bean
-    public WebClient webClient() {
+    @Qualifier("oAuth2ApiWebClient")
+    public WebClient oAuth2ApiWebClient() {
 		return WebClient.builder().baseUrl("http://localhost:8088").build();
+    }
+    
+    @Bean
+    @Qualifier("oAuth2ServerWebClient")
+    public WebClient oAuth2ServerwebClient() {
+    	return WebClient.builder().baseUrl("http://localhost:8099").filter(ExchangeFilterFunctions
+                .basicAuthentication("oauth2-jwt-client", "pass")).build();
     }
 }

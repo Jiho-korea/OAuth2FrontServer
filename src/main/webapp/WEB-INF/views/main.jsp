@@ -27,6 +27,7 @@
             }
 
             document.addEventListener("DOMContentLoaded", function () {
+                /*
                 var req = new XMLHttpRequest();
                 req.open("GET", '/main', false);
                 req.send(null);
@@ -50,7 +51,7 @@
                     success: function (data) {
                         if (data != null && data != "") {
                             console.log(data);
-                            $('#content1').append(data['name'] + "님 반갑습니다! (자바스크립트 - ApiServer 서버 연결)");
+                            $('#content1').append(data['name'] + "님 반갑습니다! {Front(자바스크립트) - ApiServer 서버 연결}");
                             //alert(data);
                             return;
                         } else {
@@ -61,15 +62,15 @@
                     error: function (jqXHR, textStatus, errorThrown) {
                         alert("인증이 유효하지 않습니다.");
                     }
-                });
+                });*/
 
                 $.ajax({
                     type: 'POST',
                     url: '/main',
                     success: function (data) {
-                        if (data.result != null) {
+                        if (data != null && data != "") {
                             console.log(data);
-                            $('#content2').append(data['result']['name'] + "님 반갑습니다! (FrontServer - ApiServer 서버 연결)");
+                            $('#content2').append(data['name'] + "님 반갑습니다! {Front(Server) - ApiServer 서버 연결}");
                         } else {
                             alert("인증이 유효하지 않습니다.");
                             swLogOut();
@@ -83,26 +84,24 @@
                 });
             });
             function swLogOut() {
-                if (confirm("로그 아웃 하시겠습니까?")) {
-                    $.ajax({
-                        type: 'POST',
-                        url: '/logout',
-                        data: "json",
-                        success: function (data) {
-                            if (data != null) {
-                                // alert("로그 아웃 처리 되었습니다.");
-                                top.location = "/login";
-                            } else {
-                                alert("에러발생 관리자에게 문의 하세요");
-                                return;
-                            }
-                        },
-                        error: function (jqXHR, textStatus, errorThrown) {
-                            alert('로그 아웃 ajax 실패');
-                            console.log(jqXHR, textStatus, errorThrown);
+                $.ajax({
+                    type: 'POST',
+                    url: '/logout',
+                    data: "json",
+                    success: function (data) {
+                        if (data != null) {
+                            // alert("로그 아웃 처리 되었습니다.");
+                            top.location = "/login";
+                        } else {
+                            alert("에러발생 관리자에게 문의 하세요");
+                            return;
                         }
-                    });
-                }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert('로그 아웃 ajax 실패');
+                        console.log(jqXHR, textStatus, errorThrown);
+                    }
+                });
             }
         </script>
     </head>
@@ -113,7 +112,7 @@
         <p id="content2"></p>
         <br><br><br>
 
-        <a onclick="javascript:swLogOut();" style="cursor: pointer;">
+        <a onclick="javascript:if (confirm('로그 아웃 하시겠습니까?')){swLogOut();}" style="cursor: pointer;">
             로그아웃
         </a>
         <!-- Bootstrap core JavaScript-->
