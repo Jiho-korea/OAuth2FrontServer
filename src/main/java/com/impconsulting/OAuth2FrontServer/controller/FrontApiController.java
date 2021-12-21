@@ -37,9 +37,8 @@ public class FrontApiController {
 	@Qualifier("oAuth2ServerWebClient")
 	private WebClient oAuth2ServerWebClient;
 
-	@RequestMapping(value = "/main", method = RequestMethod.GET)
-	public String mainGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
-		// Map<String, Object> params = new HashMap<String, Object>();
+	@RequestMapping(value = "/front/js", method = RequestMethod.GET)
+	public String frontJsGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
 		response.addHeader("Authorization",
 				(String) session.getAttribute("tokenType") + (String) session.getAttribute("accessToken"));
 		response.addHeader("accesstoken", (String) session.getAttribute("accessToken"));
@@ -47,10 +46,17 @@ public class FrontApiController {
 		response.addHeader("scope", (String) session.getAttribute("scope"));
 //    	LOG.info("front accesstoken" + (String) session.getAttribute("accessToken"));
 //    	LOG.info("front refreshtoken" + (String) session.getAttribute("refreshToken"));
-		return "main";
+		
+		return "frontJs-apiServer";
 	}
-
-	@RequestMapping(value = "/main", method = RequestMethod.POST)
+	
+	
+	@RequestMapping(value = "/front/server", method = RequestMethod.GET)
+	public String frontServerGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
+		return "frontServer-apiServer";
+	}
+	
+	@RequestMapping(value = "/front/server", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> mainPost(Model model, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws Exception {
 //		 LOG.info("front accesstoken = "+ (String) session.getAttribute("accessToken"));
