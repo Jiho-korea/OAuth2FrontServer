@@ -85,7 +85,8 @@
                             processData: false,
                             async: false,
                             beforeSend: function (xhr) {
-                                xhr.setRequestHeader("Authorization", data.token_type + "" + data.access_token);
+                                xhr.setRequestHeader("tokenType", data.token_type);
+                                xhr.setRequestHeader("accessToken", data.access_token);
                                 xhr.setRequestHeader("refreshToken", data.refresh_token);
                                 xhr.setRequestHeader("scope", data.scope);
                             },

@@ -10,7 +10,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.thoughtmechanix</groupId>
-	<artifactId>authentication-front</artifactId>
+	<artifactId>oauth2-front</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>OAuth2FrontServer</name>

@@ -30,7 +30,7 @@ public class MainController {
 	@RequestMapping(value="/main", method=RequestMethod.GET)
 	public String mainGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
 		//Map<String, Object> params = new HashMap<String, Object>();
-    	response.addHeader("auth", (String) session.getAttribute("auth"));
+		response.addHeader("Authorization", (String) session.getAttribute("tokenType") + (String) session.getAttribute("accessToken"));
     	response.addHeader("refreshToken", (String) session.getAttribute("refreshToken"));
     	response.addHeader("scope", (String) session.getAttribute("scope"));
 		return "main";
@@ -41,7 +41,8 @@ public class MainController {
 		Map<String, Object> data = new HashMap<String, Object>();
 	
 		Map<String, Object> result = webClient.get().uri("/user/data").headers(headers -> {
-			headers.add("Authorization", (String) session.getAttribute("auth"));
+			headers.add("authorization", (String) session.getAttribute("tokenType") + (String) session.getAttribute("accessToken"));
+			headers.add("accesstoken", (String) session.getAttribute("accesstoken"));
 			headers.add("scope", (String) session.getAttribute("scope"));
 		}).retrieve().bodyToMono(HashMap.class).block();
 		

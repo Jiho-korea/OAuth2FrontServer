@@ -33,7 +33,8 @@ public class MemberController {
     public ResponseEntity<String> loginPost(Model model, HttpServletRequest request, HttpSession session) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
     	
-    	String auth = request.getHeader("Authorization");
+    	String tokenType = request.getHeader("tokenType");
+    	String accessToken = request.getHeader("accessToken");
     	String refreshToken = request.getHeader("refreshToken");
     	String scope = request.getHeader("scope");
     	
@@ -41,7 +42,8 @@ public class MemberController {
 //    	LOG.info("auth = " + auth);
 //    	LOG.info("refreshToken = " + refreshToken);
 //    	LOG.info("scope = " + scope);
-    	session.setAttribute("auth", auth);
+    	session.setAttribute("tokenType", tokenType);
+    	session.setAttribute("accessToken", accessToken);
     	session.setAttribute("refreshToken", refreshToken);
     	session.setAttribute("scope", scope);
     	
@@ -52,10 +54,10 @@ public class MemberController {
     public ResponseEntity<String> logoutGet(Model model, HttpServletRequest request, HttpSession session) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
     	
-    	Object obj = session.getAttribute("auth");
+    	Object obj = session.getAttribute("accessToken");
 		// 세션 제거
 		if (obj != null) {
-			session.removeAttribute("auth");
+			session.removeAttribute("accessToken");
 			session.invalidate();
 		}
 		

@@ -31,7 +31,6 @@
                 req.open("GET", '/main', false);
                 req.send(null);
                 var headers = parseHttpHeaders(req.getAllResponseHeaders());
-                //console.log(headers);
                 $.ajax({
                     url: 'http://localhost:8088/user/data',
                     type: 'GET',
@@ -39,7 +38,7 @@
                     processData: false,
                     async: false,
                     beforeSend: function (xhr) {
-                        xhr.setRequestHeader("Authorization", headers.auth);
+                        xhr.setRequestHeader("Authorization", headers.authorization);
                         xhr.setRequestHeader("scope", headers.scope);
                     },
                     success: function (data) {
@@ -57,7 +56,6 @@
                     }
                 });
 
-
                 $.ajax({
                     type: 'POST',
                     url: '/main',
@@ -72,7 +70,7 @@
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert('로그 아웃 ajax 실패');
+                        alert("로그인 오류입니다.");
                         console.log(jqXHR, textStatus, errorThrown);
                     }
                 });

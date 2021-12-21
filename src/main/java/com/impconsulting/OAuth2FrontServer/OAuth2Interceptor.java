@@ -26,11 +26,11 @@ public class OAuth2Interceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		HttpSession session = request.getSession(true);
 
-		String auth = (String)session.getAttribute("auth");
+		String accessToken = (String)session.getAttribute("accessToken");
 		String scope = (String)session.getAttribute("scope");
 		
 		//LOG.info("interceptor auth = " + auth);
-		if (auth != null) {
+		if (accessToken != null) {
 			return true;
 		} else {
 			LOG.info("로그인 인터셉터 작동");
