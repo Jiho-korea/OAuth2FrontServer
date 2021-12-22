@@ -38,13 +38,13 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Qualifier("oAuth2ApiWebClient")
     public WebClient oAuth2ApiWebClient() {
 		//return WebClient.builder().baseUrl("http://localhost:8088").build(); // 테스트 용 API 주소
-		return WebClient.builder().baseUrl("http://127.0.0.1:8089").build();
+		return WebClient.builder().baseUrl("http://localhost:8089").build();
     }
     
     @Bean
     @Qualifier("oAuth2ServerWebClient")
     public WebClient oAuth2ServerwebClient() {
-    	return WebClient.builder().baseUrl("http://127.0.0.1:8099").filter(ExchangeFilterFunctions
+    	return WebClient.builder().baseUrl("http://localhost:8099").filter(ExchangeFilterFunctions
                 .basicAuthentication("oauth2-jwt-client", "pass")).build();
     }
 }

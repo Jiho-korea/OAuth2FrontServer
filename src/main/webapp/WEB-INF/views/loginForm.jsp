@@ -39,7 +39,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'http://127.0.0.1:8099/auth/oauth/token',
+                    url: 'http://localhost:8099/auth/oauth/token',
                     dataType: 'json',
                     crossDomain: true,
                     contentType: false,
@@ -54,7 +54,7 @@
                         //console.log(data);
                         // 바로 밑 ajax는 간단 테스트용으로 꼭 필요한 것은 아님
                         $.ajax({
-                            url: 'http://127.0.0.1:8088/user/profile',
+                            url: 'http://localhost:8088/user/profile',
                             type: 'GET',
                             contentType: false,
                             processData: false,
@@ -80,7 +80,7 @@
 
                         $.ajax({
                             type: 'POST',
-                            url: 'http://127.0.0.1:8077/login',
+                            url: 'http://localhost:8077/login',
                             contentType: false,
                             processData: false,
                             async: true,

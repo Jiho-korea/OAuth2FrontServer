@@ -54,7 +54,7 @@
                         formData.append("refresh_token", req.getResponseHeader("refreshtoken")); // refresh 토큰 form-data에 입력
                         //console.log(formData);
                         $.ajax({
-                            url: 'http://127.0.0.1:8099/auth/oauth/token',
+                            url: 'http://localhost:8099/auth/oauth/token',
                             type: 'POST',
                             contentType: false,
                             processData: false,
@@ -113,8 +113,8 @@
             }
 
             document.addEventListener("DOMContentLoaded", function () {
-                // apiAjax('http://127.0.0.1:8088/user/data'); // test Api
-                apiAjax('http://127.0.0.1:8089/forexApi/report/ccr'); // board Api
+                // apiAjax('http://localhost:8088/user/data'); // test Api
+                apiAjax('http://localhost:8089/forexApi/report/ccr'); // board Api
             });
             function swLogOut() {
                 $.ajax({
