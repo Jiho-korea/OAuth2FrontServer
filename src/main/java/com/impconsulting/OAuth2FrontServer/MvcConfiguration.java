@@ -37,7 +37,8 @@ public class MvcConfiguration implements WebMvcConfigurer {
     @Bean
     @Qualifier("oAuth2ApiWebClient")
     public WebClient oAuth2ApiWebClient() {
-		return WebClient.builder().baseUrl("http://localhost:8088").build();
+		//return WebClient.builder().baseUrl("http://localhost:8088").build(); // 테스트 용 API 주소
+		return WebClient.builder().baseUrl("http://localhost:8089").build();
     }
     
     @Bean

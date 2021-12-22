@@ -25,6 +25,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Mono;
 
 @Controller
+@RequestMapping("/front")
 public class FrontApiController {
 
 	private static final Log LOG = LogFactory.getLog(FrontApiController.class);
@@ -37,7 +38,7 @@ public class FrontApiController {
 	@Qualifier("oAuth2ServerWebClient")
 	private WebClient oAuth2ServerWebClient;
 
-	@RequestMapping(value = "/front/js", method = RequestMethod.GET)
+	@RequestMapping(value = "/js", method = RequestMethod.GET)
 	public String frontJsGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
 		// 세션에 담겨있는 세션 정보를 header 정보에 넣어준다.
 		response.addHeader("Authorization",
@@ -51,7 +52,7 @@ public class FrontApiController {
 		return "frontJs-apiServer";
 	}
 	
-	@RequestMapping(value = "/front/js", method = RequestMethod.POST)
+	@RequestMapping(value = "/js", method = RequestMethod.POST)
 	public ResponseEntity<String> frontJsPost(Model model, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		// 자바스크립트에서 받은 refresh_token 정보로 세션 업데이트하기
 		
@@ -70,28 +71,23 @@ public class FrontApiController {
 	}
 	
 	
-	@RequestMapping(value = "/front/server", method = RequestMethod.GET)
+	@RequestMapping(value = "/server", method = RequestMethod.GET)
 	public String frontServerGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
 		return "frontServer-apiServer";
 	}
 	
-	@RequestMapping(value = "/front/server", method = RequestMethod.POST)
+	@RequestMapping(value = "/server", method = RequestMethod.POST)
 	public ResponseEntity<Map<String, Object>> mainPost(Model model, HttpServletRequest request,
 			HttpServletResponse response, HttpSession session) throws Exception {
 //		 LOG.info("front accesstoken = "+ (String) session.getAttribute("accessToken"));
 		Map<String, Object> data = null;
 		try {
-			
 			// API 서버로 요청 (@PreAuthorize 어노테이션에 의해 checkToken 수행됨)
 			// 예외: WebClientResponseException 
 			// 응답코드: 400-잘못된 토큰, 401-만료된 토큰
-			data = oAuth2ApiWebClient.get().uri("/user/data").headers(headers -> {
-				headers.add("authorization",
-						(String) session.getAttribute("tokenType") + (String) session.getAttribute("accessToken"));
-				headers.add("scope", (String) session.getAttribute("scope"));
-			}).retrieve().bodyToMono(HashMap.class).block();
-
-//			LOG.info(data);
+			data = callApi("/forexApi/report/ccr", (String) session.getAttribute("tokenType"), (String) session.getAttribute("accessToken"), (String) session.getAttribute("scope"));
+			//data = callApi("/user/data", (String) session.getAttribute("tokenType"), (String) session.getAttribute("accessToken"), (String) session.getAttribute("scope")); // 테스트 용
+			//LOG.info(data);
 			return new ResponseEntity<Map<String, Object>>(data, HttpStatus.OK);
 		} catch (WebClientResponseException checkException) { // 토큰 문제 발생 시 수행되는 catch 문 -> 토큰 refresh 해야함
 			//checkException.printStackTrace();
@@ -109,14 +105,14 @@ public class FrontApiController {
 				result = oAuth2ServerWebClient.post().uri("/auth/oauth/token").syncBody(builder.build()).retrieve()
 						.bodyToMono(HashMap.class).block();
 				
-				LOG.info("refresh result = " + result);
+				// LOG.info("refresh result = " + result);
 				
 				String tokenType = (String) result.get("token_type");
 				String accessToken = (String) result.get("access_token");
 				String refreshToken = (String) result.get("refresh_token");
 				String scope = (String) result.get("scope");
 				
-				LOG.info("session refresh");
+				LOG.info("session refresh in FrontServer");
 				// 세션에 담긴 token 정보 수정 (인터셉터에서 처리할 수 있으나 우선 여기서 수정함)
 				session.setAttribute("tokenType", tokenType);
 		    	session.setAttribute("accessToken", accessToken);
@@ -125,11 +121,8 @@ public class FrontApiController {
 
 		    	// retresh 하여 새로 받은 토큰으로 API 서버에 요청
 				if(result != null) {
-					data = oAuth2ApiWebClient.get().uri("/user/data").headers(headers -> {
-						headers.add("authorization",
-								tokenType + accessToken);
-						headers.add("scope", scope);
-					}).retrieve().bodyToMono(HashMap.class).block();
+					data = callApi("/forexApi/report/ccr", tokenType, accessToken, scope);
+					// data = callApi("/user/data", tokenType, accessToken, scope); // 테스트용 API 호출
 					
 					return new ResponseEntity<Map<String, Object>>(data, HttpStatus.OK);
 				}else {
@@ -146,5 +139,14 @@ public class FrontApiController {
 			return null;
 		}
 
+	}
+	
+	private Map<String, Object> callApi(String url, String tokenType, String accessToken, String scope){
+		// API 서버 요청 메소드
+		return oAuth2ApiWebClient.get().uri(url).headers(headers -> {
+			headers.add("authorization",
+					tokenType + accessToken);
+			headers.add("scope", scope);
+		}).retrieve().bodyToMono(HashMap.class).block();
 	}
 }
