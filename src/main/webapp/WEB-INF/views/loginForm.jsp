@@ -32,7 +32,7 @@
                 }
 
                 var formData = new FormData();
-                formData.append("username", $("#id").val());  //text 타입 선택
+                formData.append("username", $("#id").val());
                 formData.append("password", $("#pwd").val());
                 formData.append("grant_type", "password");
                 formData.append("scope", "read");
@@ -52,7 +52,7 @@
                     },
                     success: function (data) {
                         //console.log(data);
-                        // 바로 밑 ajax는 테스트용으로 꼭 필요한 것은 아님
+                        // 바로 밑 ajax는 간단 테스트용으로 꼭 필요한 것은 아님
                         $.ajax({
                             url: 'http://localhost:8088/user/profile',
                             type: 'GET',
@@ -76,14 +76,14 @@
                                 alert("잘못된 토큰입니다.");
                             }
                         });
-                        //
+                        // 여기까지
 
                         $.ajax({
                             type: 'POST',
                             url: 'http://localhost:8077/login',
                             contentType: false,
                             processData: false,
-                            async: false,
+                            async: true,
                             beforeSend: function (xhr) {
                                 xhr.setRequestHeader("tokenType", data.token_type);
                                 xhr.setRequestHeader("accessToken", data.access_token);

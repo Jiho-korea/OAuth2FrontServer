@@ -39,6 +39,7 @@ public class FrontApiController {
 
 	@RequestMapping(value = "/front/js", method = RequestMethod.GET)
 	public String frontJsGet(Model model, HttpServletResponse response, HttpSession session) throws Exception {
+		// 세션에 담겨있는 세션 정보를 header 정보에 넣어준다.
 		response.addHeader("Authorization",
 				(String) session.getAttribute("tokenType") + (String) session.getAttribute("accessToken"));
 		response.addHeader("accesstoken", (String) session.getAttribute("accessToken"));
@@ -48,6 +49,24 @@ public class FrontApiController {
 //    	LOG.info("front refreshtoken" + (String) session.getAttribute("refreshToken"));
 		
 		return "frontJs-apiServer";
+	}
+	
+	@RequestMapping(value = "/front/js", method = RequestMethod.POST)
+	public ResponseEntity<String> frontJsPost(Model model, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+		// 자바스크립트에서 받은 refresh_token 정보로 세션 업데이트하기
+		
+		String tokenType = request.getHeader("tokenType");
+    	String accessToken = request.getHeader("accessToken");
+    	String refreshToken = request.getHeader("refreshToken");
+    	String scope = request.getHeader("scope");
+    	
+    	LOG.info("session refresh for Javascript");
+    	session.setAttribute("tokenType", tokenType);
+    	session.setAttribute("accessToken", accessToken);
+    	session.setAttribute("refreshToken", refreshToken);
+    	session.setAttribute("scope", scope);
+
+		return new ResponseEntity<String>("success", HttpStatus.OK);
 	}
 	
 	

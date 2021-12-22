@@ -15,42 +15,31 @@
             rel="stylesheet">
         <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
         <script>
-            function parseHttpHeaders(httpHeaders) {
-                return httpHeaders
-                    .split("\n")
-                    .map(x => x.split(/: */, 2))
-                    .filter(x => x[0])
-                    .reduce((ac, x) => {
-                        ac[x[0]] = x[1];
-                        return ac;
-                    }, {});
-            }
-
-            document.addEventListener("DOMContentLoaded", function () {
+            function apiAjax(apiUrl) {
                 var req = new XMLHttpRequest();
                 req.open("GET", '/front/js', false);
                 req.send(null);
-                var headers = parseHttpHeaders(req.getAllResponseHeaders());
                 $.ajax({
-                    url: 'http://localhost:8088/user/data',
+                    url: apiUrl + '',
                     type: 'GET',
                     contentType: false,
                     processData: false,
                     async: true,
                     beforeSend: function (xhr) {
-                        //console.log(headers.accesstoken);
-                        //console.log(headers.refreshtoken);
-                        //console.log(headers.authorization);
-                        //console.log(headers.scope);
-                        xhr.setRequestHeader("Authorization", headers.authorization);
-                        xhr.setRequestHeader("accesstoken", headers.accesstoken);
-                        xhr.setRequestHeader("refreshtoken", headers.refreshtoken);
-                        xhr.setRequestHeader("scope", headers.scope);
+                        //console.log(req.getResponseHeader("authorization"));
+                        //console.log(req.getResponseHeader("accesstoken"));
+                        //console.log(req.getResponseHeader("refreshtoken"));
+                        //console.log(req.getResponseHeader("scope"));
+                        xhr.setRequestHeader("Authorization", req.getResponseHeader("authorization"));
+                        xhr.setRequestHeader("accesstoken", req.getResponseHeader("accesstoken"));
+                        xhr.setRequestHeader("refreshtoken", req.getResponseHeader("refreshtoken"));
+                        xhr.setRequestHeader("scope", req.getResponseHeader("scope"));
                     },
                     success: function (data) {
                         if (data != null && data != "") {
-                            console.log(data);
-                            $('#content1').append(data['name'] + "님 반갑습니다! {Front(자바스크립트) - ApiServer 서버 연결}");
+                            console.log(data); // api 서버에서 받은 데이터
+
+                            $('#apiResult').append(data['name'] + "님 반갑습니다! {Front(자바스크립트) - ApiServer 서버 연결}");
                             //alert(data);
                             return;
                         } else {
@@ -59,10 +48,73 @@
                         }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        alert("인증이 유효하지 않습니다.");
+                        // 토큰 만료시 token refresh 처리
+                        let formData = new FormData();
+                        formData.append("grant_type", "refresh_token");
+                        formData.append("refresh_token", req.getResponseHeader("refreshtoken")); // refresh 토큰 form-data에 입력
+                        //console.log(formData);
+                        $.ajax({
+                            url: 'http://localhost:8099/auth/oauth/token',
+                            type: 'POST',
+                            contentType: false,
+                            processData: false,
+                            async: true,
+                            data: formData,
+                            beforeSend: function (xhr) {
+                                xhr.setRequestHeader("Authorization", "Basic " + btoa("oauth2-jwt-client" + ":" + "pass"));
+                            },
+                            success: function (data) {
+                                if (data != null && data != "") {
+                                    //console.log(data); // OAuth2 서버의 토큰 refresh 결과
+                                    //Front 서버의 세션 정보 업데이트 ajax 문
+                                    $.ajax({
+                                        url: '/front/js',
+                                        type: 'POST',
+                                        contentType: false,
+                                        processData: false,
+                                        async: true,
+                                        data: formData,
+                                        beforeSend: function (xhr) {
+                                            xhr.setRequestHeader("tokenType", data.token_type);
+                                            xhr.setRequestHeader("accessToken", data.access_token);
+                                            xhr.setRequestHeader("refreshToken", data.refresh_token);
+                                            xhr.setRequestHeader("scope", data.scope);
+                                        },
+                                        success: function (data) {
+                                            if (data == "success") {
+                                                // 세션 업데이트 성공 시
+                                                console.log("refresh success!");
+                                                apiAjax(apiUrl);
+                                                return;
+                                            } else {
+                                                alert("서버 오류입니다.");
+                                                swLogOut();
+                                            }
+                                        },
+                                        error: function (jqXHR, textStatus, errorThrown) {
+                                            alert("서버 오류입니다.");
+                                            swLogOut();
+                                        }
+                                    });
+                                    //apiAjax();
+                                    return;
+                                } else {
+                                    alert("refresh 인증이 유효하지 않습니다.");
+                                    swLogOut();
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alert("refresh 인증이 유효하지 않습니다.");
+                                swLogOut();
+                            }
+                        });
                     }
                 });
+            }
 
+            document.addEventListener("DOMContentLoaded", function () {
+                // apiAjax('http://localhost:8088/user/data'); // test Api
+                apiAjax('http://localhost:8089/forexApi/report/ccr'); // board Api
             });
             function swLogOut() {
                 $.ajax({
@@ -88,7 +140,7 @@
     </head>
 
     <body>
-        <p id="content1"></p>
+        <p id="apiResult"></p>
         <br><br><br>
 
         <a href="/main">메인으로 이동</a><br><br>
