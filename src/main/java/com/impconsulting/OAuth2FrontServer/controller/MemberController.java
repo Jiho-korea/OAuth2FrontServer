@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,23 +22,25 @@ public class MemberController {
 	
 	private static final Log LOG = LogFactory.getLog(MemberController.class);
 	
-	@RequestMapping(value="/login", method=RequestMethod.GET)
+	@GetMapping(value="/login")
     public String loginGet(Model model) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
+    	LOG.info("1111111111111111111111111111111");
 //    	LOG.info("GET");
         return "loginForm";
     }   
 	
 	@ResponseBody
-	@RequestMapping(value="/login", method=RequestMethod.POST)
+	@PostMapping(value="/login")
     public ResponseEntity<String> loginPost(Model model, HttpServletRequest request, HttpSession session) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
-    	
+    	LOG.info("33333333333333333333333333");
     	String tokenType = request.getHeader("tokenType");
     	String accessToken = request.getHeader("accessToken");
     	String refreshToken = request.getHeader("refreshToken");
     	String scope = request.getHeader("scope");
     	
+    	LOG.info("member controller accessToken: " +  accessToken);
 //    	LOG.info("POST");
 //    	LOG.info("auth = " + auth);
 //    	LOG.info("refreshToken = " + refreshToken);
