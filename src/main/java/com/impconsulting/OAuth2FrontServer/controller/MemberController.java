@@ -25,8 +25,7 @@ public class MemberController {
 	@GetMapping(value="/login/")
     public String loginGet(Model model, HttpServletRequest request) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
-    	LOG.info("Login Get: " + request.getMethod());
-//    	LOG.info("GET");
+//    	LOG.info("Login Get: " + request.getMethod());
         return "loginForm";
     }   
 	
@@ -34,13 +33,13 @@ public class MemberController {
 	@PostMapping(value="/login/")
     public ResponseEntity<String> loginPost(Model model, HttpServletRequest request, HttpSession session) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
-    	LOG.info("Login Post: " + request.getMethod());
+    	//LOG.info("Login Post: " + request.getMethod());
     	String tokenType = request.getHeader("tokenType");
     	String accessToken = request.getHeader("accessToken");
     	String refreshToken = request.getHeader("refreshToken");
     	String scope = request.getHeader("scope");
     	
-    	LOG.info("member controller accessToken: " +  accessToken);
+    	//LOG.info("member controller accessToken: " +  accessToken);
 //    	LOG.info("POST");
 //    	LOG.info("auth = " + auth);
 //    	LOG.info("refreshToken = " + refreshToken);
