@@ -22,19 +22,19 @@ public class MemberController {
 	
 	private static final Log LOG = LogFactory.getLog(MemberController.class);
 	
-	@GetMapping(value="/login")
-    public String loginGet(Model model) throws Exception {
+	@GetMapping(value="/login/")
+    public String loginGet(Model model, HttpServletRequest request) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
-    	LOG.info("1111111111111111111111111111111");
+    	LOG.info("Login Get: " + request.getMethod());
 //    	LOG.info("GET");
         return "loginForm";
     }   
 	
 	@ResponseBody
-	@PostMapping(value="/login")
+	@PostMapping(value="/login/")
     public ResponseEntity<String> loginPost(Model model, HttpServletRequest request, HttpSession session) throws Exception {
     	Map<String, Object> params = new HashMap<String, Object>();
-    	LOG.info("33333333333333333333333333");
+    	LOG.info("Login Post: " + request.getMethod());
     	String tokenType = request.getHeader("tokenType");
     	String accessToken = request.getHeader("accessToken");
     	String refreshToken = request.getHeader("refreshToken");

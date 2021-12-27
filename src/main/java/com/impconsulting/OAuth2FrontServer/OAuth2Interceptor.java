@@ -28,13 +28,14 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 
 		String accessToken = (String)session.getAttribute("accessToken");
 		String scope = (String)session.getAttribute("scope");
+		
 		LOG.info("interceptor accessToken: " +  accessToken);
-		//LOG.info("interceptor auth = " + auth);
+		
 		if (accessToken != null) {
 			return true;
 		} else {
 			LOG.info("로그인 인터셉터 작동");
-			response.sendRedirect(request.getContextPath() + "/login");
+			response.sendRedirect(request.getContextPath() + "/login/");
 			return false;
 		}
 	}

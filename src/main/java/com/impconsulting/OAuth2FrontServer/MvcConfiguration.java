@@ -31,7 +31,7 @@ public class MvcConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new OAuth2Interceptor())
                 .addPathPatterns("/*")
-        		.excludePathPatterns("/login");
+        		.excludePathPatterns("/login/");
     }
     
     @Bean
