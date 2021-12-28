@@ -38,8 +38,8 @@
                 formData.append("scope", "read");
 
                 $.ajax({
-                    //url: 'http://localhost:8099/auth/oauth/token',
-                    url: 'http://3.38.119.81:8099/auth/oauth/token',
+                    url: 'http://localhost:8099/auth/oauth/token',
+                    //url: 'http://3.38.119.81:8099/auth/oauth/token',
                     type: 'POST',
                     dataType: 'json',
                     crossDomain: true,
@@ -55,8 +55,8 @@
                         //console.log(data);
                         // 바로 밑 ajax는 간단 테스트용으로 꼭 필요한 것은 아님
                         $.ajax({
-                            // url: 'http://localhost:8088/user/profile',
-                            url: 'http://3.38.119.81:8088/user/profile',
+                            url: 'http://localhost:8088/user/profile',
+                            //url: 'http://3.38.119.81:8088/user/profile',
                             type: 'GET',
                             contentType: false,
                             processData: false,
@@ -81,8 +81,8 @@
                         // 여기까지
 
                         $.ajax({
-                            // url: 'http://localhost:8077/login/',
-                            url: 'http://3.38.119.81:8077/login/',
+                            url: 'http://localhost:8077/login/',
+                            //url: 'http://3.38.119.81:8077/login/',
                             type: 'POST',
                             crossDomain: true,
                             contentType: false,
