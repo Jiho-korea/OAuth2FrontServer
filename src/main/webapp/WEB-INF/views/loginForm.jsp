@@ -81,8 +81,8 @@
                         // 여기까지
 
                         $.ajax({
-                            url: 'http://localhost:8077/login/',
-                            //url: 'http://3.38.119.81:8077/login/',
+                            url: 'http://localhost:8077/front/login/',
+                            //url: 'http://3.38.119.81:8077/front/login/',
                             type: 'POST',
                             crossDomain: true,
                             contentType: false,
@@ -97,7 +97,7 @@
                             },
                             success: function (data) {
                                 if (data != null) {
-                                    window.location = "/main";
+                                    window.location = "/front/main";
                                     /*
                                     var req = new XMLHttpRequest();
                                     req.open('GET', "/main", false);
