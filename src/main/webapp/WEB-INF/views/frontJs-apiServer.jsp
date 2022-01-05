@@ -122,12 +122,12 @@
             function swLogOut() {
                 $.ajax({
                     type: 'POST',
-                    url: '/logout',
+                    url: '/front/logout',
                     data: "json",
                     success: function (data) {
                         if (data != null) {
                             // alert("로그 아웃 처리 되었습니다.");
-                            top.location = "/login";
+                            top.location = "/front/login";
                         } else {
                             alert("에러발생 관리자에게 문의 하세요");
                             return;
@@ -146,7 +146,7 @@
         <p id="apiResult"></p>
         <br><br><br>
 
-        <a href="/main">메인으로 이동</a><br><br>
+        <a href="/front/main">메인으로 이동</a><br><br>
         <a onclick="javascript:if (confirm('로그 아웃 하시겠습니까?')){swLogOut();}" style="cursor: pointer;">
             로그아웃
         </a>

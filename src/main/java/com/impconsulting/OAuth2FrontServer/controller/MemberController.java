@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
+@RequestMapping("/front")
 public class MemberController {
 	
 	private static final Log LOG = LogFactory.getLog(MemberController.class);

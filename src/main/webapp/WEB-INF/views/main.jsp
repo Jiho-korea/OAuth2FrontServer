@@ -18,7 +18,7 @@
             function swLogOut() {
                 $.ajax({
                     type: 'POST',
-                    url: '/logout',
+                    url: '/front/logout',
                     data: "json",
                     success: function (data) {
                         if (data != null) {
